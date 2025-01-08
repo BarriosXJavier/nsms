@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import Link from 'next/link'
-import { role, parentsData } from '@/lib/data'
+import { role, studentsData } from '@/lib/data'
 
 type Student = {
   id: number;
@@ -79,12 +79,12 @@ const renderRow = (item: Student) => (
 )
 
 
-const ParentsListPage = () => {
+const StudentsListPage = () => {
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/*Top*/}
       <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">All Parents</h1>
+        <h1 className="hidden md:block text-lg font-semibold">All Students</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
@@ -95,12 +95,12 @@ const ParentsListPage = () => {
         </div>
       </div>
       {/*List*/}
-      <Table columns={columns} renderRow={renderRow} data={parentsData} />
+      <Table columns={columns} renderRow={renderRow} data={studentsData} />
       {/*Pagination*/}
       <Pagination />
     </div>
   )
 }
 
-export default ParentsListPage
+export default StudentsListPage
 

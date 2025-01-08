@@ -19,7 +19,7 @@ const DashboardLayout = ({
         </Link>
         <Menu />
       </div>
-      <div className="w-[86%]  p-4 bg-gray-100 overflow-scroll">
+      <div className="w-[86%]  p-4 bg-gray-100 overflow-scroll flex flex-col">
         <Navbar />
         {children}
       </div>
