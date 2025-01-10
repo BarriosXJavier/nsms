@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import Link from 'next/link'
 import { role, studentsData } from '@/lib/data'
+import FormModel from '@/components/FormModel'
 
 type Student = {
   id: number;
@@ -21,25 +22,38 @@ type Student = {
 }
 const columns = [
   {
-    header: "info", accessor: "info"
+    header: "info",
+    accessor: "info"
   },
   {
-    student: "Student ID", accessor: "studentId", className: "hidden md:table-cell"
+    student: "Student ID",
+    accessor: "studentId",
+    className: "hidden md:table-cell"
   },
   {
-    subjects: "Grade", accessor: "grade", className: "hidden md:table-cell"
+    subjects: "Grade",
+    accessor: "grade",
+    className: "hidden md:table-cell"
   },
   {
-    Classes: "Classes", accessor: "classes", className: "hidden md:table-cell"
+    Classes: "Classes",
+    accessor: "classes",
+    className: "hidden md:table-cell"
   },
   {
-    Phone: "Phone", accessor: "phone", className: "hidden md:table-cell"
+    Phone: "Phone",
+    accessor: "phone",
+    className: "hidden md:table-cell"
   },
   {
-    Address: "Address", accessor: "address", className: "hidden md:table-cell"
+    Address: "Address",
+    accessor: "address",
+    className: "hidden md:table-cell"
   },
   {
-    Actions: "Actions", accessor: "actions", className: "hidden md:table-cell"
+    Actions: "Actions",
+    accessor: "actions",
+    className: "hidden md:table-cell"
   }
 
 ]
@@ -69,9 +83,7 @@ const renderRow = (item: Student) => (
           </button>
         </Link>
         {role === "admin" && (
-          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-200">
-            <Image src="/delete.png" width={16} height={16} alt="" />
-          </button>
+          <FormModel table="student" type="delete" id={item.id} />
         )}
       </div>
     </td>
@@ -90,7 +102,9 @@ const StudentsListPage = () => {
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/filter.png" width={14} height={14} alt="Filter" /></button>
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/sort.png" width={14} height={14} alt="Sort" /></button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/plus.png" width={14} height={14} alt="plus" /></button>
+            {role === "admin" && (
+              <FormModel table="student" type="create" />
+            )}
           </div>
         </div>
       </div>

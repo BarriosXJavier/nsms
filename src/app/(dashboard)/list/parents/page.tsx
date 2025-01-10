@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import Link from 'next/link'
 import { role, parentsData } from '@/lib/data'
+import FormModel from '@/components/FormModel'
 
 type Parent = {
   id: number;
@@ -59,15 +60,11 @@ const renderRow = (item: Parent) => (
     <td className="hidden md:table-cell">{item.phone}</td>
     <td>
       <div className="flex items-center gap-2">
-        <Link href={`list/students/${item.id}`}>
-          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-200">
-            <Image src="/view.png" width={16} height={16} alt="" />
-          </button>
-        </Link>
         {role === "admin" && (
-          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-200">
-            <Image src="/delete.png" width={16} height={16} alt="" />
-          </button>
+          <>
+            <FormModel table="parent" type="delete" id={item.id} />
+            <FormModel table="parent" type="update" data={item} />
+          </>
         )}
       </div>
     </td>
@@ -85,7 +82,9 @@ const ParentsListPage = () => {
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/filter.png" width={14} height={14} alt="Filter" /></button>
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/sort.png" width={14} height={14} alt="Sort" /></button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/plus.png" width={14} height={14} alt="plus" /></button>
+            {role === "admin" && (
+              <FormModel table="parent" type="create" />
+            )}
           </div>
         </div>
       </div>

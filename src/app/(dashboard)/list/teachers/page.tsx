@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import Link from 'next/link'
 import { role, teachersData } from '@/lib/data'
+import FormModel from '@/components/FormModel'
 
 type Teacher = {
   id: number;
@@ -69,9 +70,11 @@ const renderRow = (item: Teacher) => (
           </button>
         </Link>
         {role === "admin" && (
-          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-200">
-            <Image src="/delete.png" width={16} height={16} alt="" />
-          </button>
+          //<button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-200">
+          //  <Image src="/delete.png" width={16} height={16} alt="" />
+          //</button>
+
+          <FormModel table="teacher" type="create" id={item.id} />
         )}
       </div>
     </td>
@@ -90,7 +93,9 @@ const TeachersListPage = () => {
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/filter.png" width={14} height={14} alt="Filter" /></button>
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/sort.png" width={14} height={14} alt="Sort" /></button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/plus.png" width={14} height={14} alt="plus" /></button>
+            {role === "admin" && (
+              <FormModel table="teacher" type="create" />
+            )}
           </div>
         </div>
       </div>
@@ -98,7 +103,7 @@ const TeachersListPage = () => {
       <Table columns={columns} renderRow={renderRow} data={teachersData} />
       {/*Pagination*/}
       <Pagination />
-    </div>
+    </div >
   )
 }
 
