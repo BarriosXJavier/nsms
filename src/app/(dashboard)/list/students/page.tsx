@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import TableSearch from '@/components/TableSearch'
-import React from 'react'
-import Image from 'next/image'
-import Pagination from '@/components/Pagination'
-import Table from '@/components/Table'
-import Link from 'next/link'
-import { role, studentsData } from '@/lib/data'
-import FormModel from '@/components/FormModel'
+import TableSearch from "@/components/TableSearch";
+import React from "react";
+import Image from "next/image";
+import Pagination from "@/components/Pagination";
+import Table from "@/components/Table";
+import Link from "next/link";
+import { role, studentsData } from "@/lib/data";
+import FormModel from "@/components/FormModel";
 
 type Student = {
   id: number;
@@ -19,54 +19,59 @@ type Student = {
   phone?: string;
   grade: number;
   address: string;
-}
+};
 const columns = [
   {
     header: "info",
-    accessor: "info"
+    accessor: "info",
   },
   {
     student: "Student ID",
     accessor: "studentId",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     subjects: "Grade",
     accessor: "grade",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Classes: "Classes",
     accessor: "classes",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Phone: "Phone",
     accessor: "phone",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Address: "Address",
     accessor: "address",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Actions: "Actions",
     accessor: "actions",
-    className: "hidden md:table-cell"
-  }
-
-]
+    className: "hidden md:table-cell",
+  },
+];
 
 const renderRow = (item: Student) => (
-  <tr key={item.id} className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200">
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200"
+  >
     <td className="flex items-center gap-4 p-4">
       <Image
-        src={item.photo} width={40} height={40} alt="Student" className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
+        src={item.photo}
+        width={40}
+        height={40}
+        alt="Student"
+        className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
+      />
       <div className="flex flex-col">
-        <h3 className="font-semibold">
-          {item.name}
-        </h3>
+        <h3 className="font-semibold">{item.name}</h3>
         <p className="text-xs text-gray-500">{item?.class}</p>
       </div>
     </td>
@@ -87,9 +92,8 @@ const renderRow = (item: Student) => (
         )}
       </div>
     </td>
-  </tr >
-)
-
+  </tr>
+);
 
 const StudentsListPage = () => {
   return (
@@ -100,11 +104,13 @@ const StudentsListPage = () => {
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/filter.png" width={14} height={14} alt="Filter" /></button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/sort.png" width={14} height={14} alt="Sort" /></button>
-            {role === "admin" && (
-              <FormModel table="student" type="create" />
-            )}
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+              <Image src="/filter.png" width={14} height={14} alt="Filter" />
+            </button>
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+              <Image src="/sort.png" width={14} height={14} alt="Sort" />
+            </button>
+            {role === "admin" && <FormModel table="student" type="create" />}
           </div>
         </div>
       </div>
@@ -113,8 +119,7 @@ const StudentsListPage = () => {
       {/*Pagination*/}
       <Pagination />
     </div>
-  )
-}
+  );
+};
 
-export default StudentsListPage
-
+export default StudentsListPage;

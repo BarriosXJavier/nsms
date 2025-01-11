@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import TableSearch from '@/components/TableSearch'
-import React from 'react'
-import Image from 'next/image'
-import Pagination from '@/components/Pagination'
-import Table from '@/components/Table'
-import Link from 'next/link'
-import { role, parentsData } from '@/lib/data'
-import FormModel from '@/components/FormModel'
+import TableSearch from "@/components/TableSearch";
+import React from "react";
+import Image from "next/image";
+import Pagination from "@/components/Pagination";
+import Table from "@/components/Table";
+import Link from "next/link";
+import { role, parentsData } from "@/lib/data";
+import FormModel from "@/components/FormModel";
 
 type Parent = {
   id: number;
@@ -16,42 +16,42 @@ type Parent = {
   students: string[];
   phone: string;
   address: string;
-}
+};
 const columns = [
   {
     header: "info",
-    accessor: "info"
+    accessor: "info",
   },
   {
     students: "Student Names",
     accessor: "students",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Phone: "Phone",
     accessor: "phone",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Address: "Address",
     accessor: "address",
-    className: "hidden md:table-cell"
+    className: "hidden md:table-cell",
   },
   {
     Actions: "Actions",
     accessor: "actions",
-    className: "hidden md:table-cell"
-  }
-
-]
+    className: "hidden md:table-cell",
+  },
+];
 
 const renderRow = (item: Parent) => (
-  <tr key={item.id} className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200">
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200"
+  >
     <td className="flex items-center gap-4 p-4">
       <div className="flex flex-col">
-        <h3 className="font-semibold">
-          {item.name}
-        </h3>
+        <h3 className="font-semibold">{item.name}</h3>
         <p className="text-xs text-gray-500">{item?.email}</p>
       </div>
     </td>
@@ -68,8 +68,8 @@ const renderRow = (item: Parent) => (
         )}
       </div>
     </td>
-  </tr >
-)
+  </tr>
+);
 
 const ParentsListPage = () => {
   return (
@@ -80,11 +80,13 @@ const ParentsListPage = () => {
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/filter.png" width={14} height={14} alt="Filter" /></button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200"><Image src="/sort.png" width={14} height={14} alt="Sort" /></button>
-            {role === "admin" && (
-              <FormModel table="parent" type="create" />
-            )}
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+              <Image src="/filter.png" width={14} height={14} alt="Filter" />
+            </button>
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+              <Image src="/sort.png" width={14} height={14} alt="Sort" />
+            </button>
+            {role === "admin" && <FormModel table="parent" type="create" />}
           </div>
         </div>
       </div>
@@ -93,8 +95,7 @@ const ParentsListPage = () => {
       {/*Pagination*/}
       <Pagination />
     </div>
-  )
-}
+  );
+};
 
-export default ParentsListPage
-
+export default ParentsListPage;
