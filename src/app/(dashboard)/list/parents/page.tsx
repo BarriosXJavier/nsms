@@ -133,7 +133,7 @@ const ParentsListPage = () => {
 
   if (loading) {
     return (
-      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
         <div className="flex items-center justify-center h-96">
           <p className="text-gray-500">Loading parents...</p>
         </div>
@@ -143,7 +143,7 @@ const ParentsListPage = () => {
 
   if (error) {
     return (
-      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <p className="text-red-500 mb-4">{error}</p>
@@ -160,17 +160,17 @@ const ParentsListPage = () => {
   }
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
       {/*Top*/}
-      <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">All Parents</h1>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
+        <h1 className="text-lg sm:text-xl font-semibold">All Parents</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
           <TableSearch onSearch={handleSearch} />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
               <Image src="/filter.png" width={14} height={14} alt="Filter" />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
               <Image src="/sort.png" width={14} height={14} alt="Sort" />
             </button>
             {session?.user.role === "ADMIN" && <FormModel table="parent" type="create" />}
@@ -185,7 +185,7 @@ const ParentsListPage = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto py-2 sm:py-2 px-6 sm:px-4 rounded-md bg-slate-200 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-300 transition-colors min-h-[44px] sm:min-h-0"
         >
           Prev
         </button>
@@ -218,14 +218,14 @@ const ParentsListPage = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === pagination.totalPages}
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto py-2 sm:py-2 px-6 sm:px-4 rounded-md bg-slate-200 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-300 transition-colors min-h-[44px] sm:min-h-0"
         >
           Next
         </button>
       </div>
 
       {/* Info */}
-      <div className="text-xs text-gray-500 text-center mt-2">
+      <div className="text-xs sm:text-sm text-gray-500 text-center mt-2 px-2">
         Showing {parents.length} of {pagination.total} parents (Page{" "}
         {currentPage} of {pagination.totalPages})
       </div>
