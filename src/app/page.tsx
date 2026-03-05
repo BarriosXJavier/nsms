@@ -1,8 +1,13 @@
+"use client"
+
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 const Homepage = () => {
+  const { data: session, status } = useSession();
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -13,13 +18,35 @@ const Homepage = () => {
               <Image src="/logo.png" alt="Logo" width={40} height={40} />
               <span className="text-xl font-bold text-black">NSMS</span>
             </div>
-            <div className="flex gap-4">
-              <Link href="/signin">
-                <Button variant="outline" className="border-gray-300 hover:bg-gray-50">Sign In</Button>
-              </Link>
-              <Link href="/signin">
-                <Button className="bg-black hover:bg-gray-800">Get Started</Button>
-              </Link>
+            <div className="flex gap-4 items-center">
+              {status === "loading" ? (
+                <span className="text-sm text-gray-500">Loading...</span>
+              ) : status === "authenticated" && session?.user ? (
+                <>
+                  <span className="text-sm text-gray-700">
+                    Welcome, <span className="font-semibold">{session.user.email?.split("@")[0]}</span>
+                  </span>
+                  <Link href={`/${session.user.role.toLowerCase()}`}>
+                    <Button className="bg-black hover:bg-gray-800">Go to Dashboard</Button>
+                  </Link>
+                  <Button 
+                    variant="outline" 
+                    className="border-gray-300 hover:bg-gray-50"
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/signin">
+                    <Button variant="outline" className="border-gray-300 hover:bg-gray-50">Sign In</Button>
+                  </Link>
+                  <Link href="/signin">
+                    <Button className="bg-black hover:bg-gray-800">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
