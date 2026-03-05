@@ -18,12 +18,12 @@ const Homepage = () => {
               <Image src="/logo.png" alt="Logo" width={40} height={40} />
               <span className="text-xl font-bold text-black">NSMS</span>
             </div>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 sm:gap-3 md:gap-4 items-center flex-wrap sm:flex-nowrap">
               {status === "loading" ? (
                 <span className="text-sm text-gray-500">Loading...</span>
               ) : status === "authenticated" && session?.user ? (
                 <>
-                  <span className="text-sm text-gray-700">
+                  <span className="hidden sm:inline text-sm text-gray-700">
                     Welcome, <span className="font-semibold">{session.user.email?.split("@")[0]}</span>
                   </span>
                   <Link href={`/${session.user.role.toLowerCase()}`}>
@@ -55,12 +55,12 @@ const Homepage = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h1 className="text-5xl md:text-6xl font-bold text-black mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4 sm:mb-6">
                 Modern School Management Made <span className="text-gray-600">Simple</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
                 Streamline your educational institution with our comprehensive school management system. 
                 Manage students, teachers, classes, and more from one powerful platform.
               </p>
@@ -95,7 +95,7 @@ const Homepage = () => {
             <h2 className="text-4xl font-bold text-black mb-4">Everything You Need</h2>
             <p className="text-xl text-gray-600">Powerful features to manage your school efficiently</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             <FeatureCard
               icon="/student.png"
               title="Student Management"
@@ -198,7 +198,7 @@ const Homepage = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Image src="/logo.png" alt="Logo" width={32} height={32} />
