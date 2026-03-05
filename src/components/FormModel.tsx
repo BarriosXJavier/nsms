@@ -34,8 +34,8 @@ const FormModel = ({ table, type, data, id }: {
   id?: any
 
 }) => {
-  const size = type === "create" ? "w-8 h-8" : "w-7 h-7"
-  const bgColor = type === "create" ? "bg-yellow-200" : type === "update" ? "bg-sky-300" : "bg-purple-300"
+  const size = type === "create" ? "w-10 h-10 sm:w-9 sm:h-9" : "w-10 h-10 sm:w-8 sm:h-8"
+  const bgColor = type === "create" ? "bg-yellow-200 hover:bg-yellow-300" : type === "update" ? "bg-sky-300 hover:bg-sky-400" : "bg-purple-300 hover:bg-purple-400"
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -66,14 +66,14 @@ const FormModel = ({ table, type, data, id }: {
   const Form = () => {
     if (type === "delete" && id) {
       return (
-        <div className="p-4 flex flex-col gap-4">
-          <span className="text-center font-medium">
+        <div className="p-4 sm:p-6 flex flex-col gap-4">
+          <span className="text-center font-medium text-sm sm:text-base">
             All data will be lost! Are you sure you want to delete this {table}?
           </span>
           <button
             onClick={handleDelete}
             disabled={loading}
-            className="bg-red-400 text-white py-2 px-4 rounded-md border-none w-max self-center disabled:bg-gray-300"
+            className="bg-red-400 hover:bg-red-500 text-white py-3 sm:py-2 px-6 sm:px-4 rounded-md border-none w-full sm:w-max self-center disabled:bg-gray-300 min-h-[44px] sm:min-h-0 transition-colors"
           >
             {loading ? "Deleting..." : "Delete"}
           </button>
@@ -112,15 +112,23 @@ const FormModel = ({ table, type, data, id }: {
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className={`${size} flex items-center justify-center rounded-full ${bgColor}`}>
+      <button 
+        onClick={() => setOpen(true)} 
+        className={`${size} flex items-center justify-center rounded-full ${bgColor} transition-colors min-w-[40px] sm:min-w-0`}
+        aria-label={`${type} ${table}`}
+      >
         <Image src={`/${type}.png`} alt="" width={16} height={16} />
       </button>
-      {open && <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-        <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] max-h-[90vh] overflow-y-auto">
+      {open && <div className="w-screen h-screen fixed left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div className="bg-white p-4 sm:p-6 rounded-md relative w-full sm:w-[95%] md:w-[85%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
           <Form />
-          <div className="absolute top-4 right-4 cursor-pointer" onClick={() => setOpen(false)}>
-            <Image src="/close.png" alt="" width={14} height={14} />
-          </div>
+          <button 
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 cursor-pointer p-2 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center" 
+            onClick={() => setOpen(false)}
+            aria-label="Close"
+          >
+            <Image src="/close.png" alt="" width={16} height={16} />
+          </button>
         </div>
       </div>}
     </>

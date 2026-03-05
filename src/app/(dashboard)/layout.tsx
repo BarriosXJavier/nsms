@@ -9,17 +9,17 @@ const DashboardLayout = ({
   return (
     <div className="h-screen flex">
       {/*SIDEBAR NAVIGATION*/}
-      <div className="w-[14% ] md:w-[8%] lg:w-[16%] p-4">
+      <div className="w-16 sm:w-20 md:w-24 lg:w-64 xl:w-72 p-2 sm:p-4 border-r border-gray-200 flex flex-col">
         <Link
           href="/"
-          className="flex items-center justify-center lg:justify-start gap-2"
+          className="flex items-center justify-center md:justify-start gap-2 mb-4"
         >
-          <Image src="/logo.png" alt="logo" width={32} height={32} />
-          <span className="hidden lg:block">NSMS</span>
+          <Image src="/logo.png" alt="logo" width={32} height={32} className="min-w-[32px]" />
+          <span className="hidden md:block font-bold text-lg">NSMS</span>
         </Link>
         <Menu />
       </div>
-      <div className="w-[86%]  p-4 bg-gray-100 overflow-scroll flex flex-col">
+      <div className="flex-1 p-2 sm:p-4 bg-gray-100 overflow-auto flex flex-col">
         <Navbar />
         {children}
       </div>

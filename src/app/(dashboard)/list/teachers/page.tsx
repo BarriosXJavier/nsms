@@ -127,30 +127,30 @@ const TeachersListPage = () => {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-50"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="p-4">
         <div className="flex flex-col">
           <h3 className="font-semibold">{item.name}</h3>
           <p className="text-xs text-gray-500">{item.user?.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.teacherId}</td>
-      <td className="hidden md:table-cell">
+      <td className="hidden md:table-cell px-4">{item.teacherId}</td>
+      <td className="hidden md:table-cell px-4">
         {item.subjects?.length > 0
           ? item.subjects.map((s) => s.name).join(", ")
           : `${item._count?.subjects || 0} subjects`}
       </td>
-      <td className="hidden md:table-cell">
+      <td className="hidden md:table-cell px-4">
         {item.classes?.length > 0
           ? item.classes.map((c) => c.name).join(", ")
           : `${item._count?.classes || 0} classes`}
       </td>
-      <td className="hidden lg:table-cell">{item.phone || "-"}</td>
-      <td className="hidden lg:table-cell">{item.address || "-"}</td>
-      <td>
+      <td className="hidden lg:table-cell px-4">{item.phone || "-"}</td>
+      <td className="hidden lg:table-cell px-4">{item.address || "-"}</td>
+      <td className="px-4">
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-200">
-              <Image src="/view.png" width={16} height={16} alt="" />
+            <button className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-sky-200 hover:bg-sky-300 transition-colors min-w-[40px] sm:min-w-0">
+              <Image src="/view.png" width={16} height={16} alt="View" />
             </button>
           </Link>
           <FormModel table="teacher" type="update" data={item} id={item.id} />
@@ -189,18 +189,18 @@ const TeachersListPage = () => {
   }
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
       {/* Top */}
-      <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">All Teachers</h1>
-        <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
+        <h1 className="text-lg sm:text-xl font-semibold">All Teachers</h1>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto">
           <TableSearch onSearch={handleSearch} />
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
-              <Image src="/filter.png" width={14} height={14} alt="Filter" />
+          <div className="flex items-center gap-2 sm:gap-3 justify-end">
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
+              <Image src="/filter.png" width={16} height={16} alt="Filter" />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
-              <Image src="/sort.png" width={14} height={14} alt="Sort" />
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
+              <Image src="/sort.png" width={16} height={16} alt="Sort" />
             </button>
             <FormModel table="teacher" type="create" />
           </div>
@@ -217,15 +217,15 @@ const TeachersListPage = () => {
       )}
 
       {/* Pagination */}
-      <div className="p-4 flex items-center justify-between text-gray-500">
+      <div className="p-2 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-500">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto py-2 sm:py-2 px-6 sm:px-4 rounded-md bg-slate-200 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-300 transition-colors min-h-[44px] sm:min-h-0"
         >
           Prev
         </button>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-1 sm:gap-2 text-sm flex-wrap justify-center">
           {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
             .filter((page) => {
               return (
@@ -237,12 +237,12 @@ const TeachersListPage = () => {
             .map((page, index, array) => (
               <React.Fragment key={page}>
                 {index > 0 && array[index - 1] !== page - 1 && (
-                  <span key={`ellipsis-${page}`}>...</span>
+                  <span key={`ellipsis-${page}`} className="px-1">...</span>
                 )}
                 <button
                   onClick={() => handlePageChange(page)}
-                  className={`px-2 rounded-sm ${
-                    currentPage === page ? "bg-sky-200" : ""
+                  className={`min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 sm:px-3 sm:py-1 rounded-md transition-colors ${
+                    currentPage === page ? "bg-sky-200 font-semibold" : "hover:bg-slate-100"
                   }`}
                 >
                   {page}
@@ -253,14 +253,14 @@ const TeachersListPage = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === pagination.totalPages}
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto py-2 sm:py-2 px-6 sm:px-4 rounded-md bg-slate-200 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-300 transition-colors min-h-[44px] sm:min-h-0"
         >
           Next
         </button>
       </div>
 
       {/* Info */}
-      <div className="text-xs text-gray-500 text-center mt-2">
+      <div className="text-xs sm:text-sm text-gray-500 text-center mt-2 px-2">
         Showing {teachers.length} of {pagination.total} teachers (Page{" "}
         {currentPage} of {pagination.totalPages})
       </div>
