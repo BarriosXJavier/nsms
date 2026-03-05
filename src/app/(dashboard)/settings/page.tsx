@@ -147,7 +147,7 @@ const SettingsPage = () => {
       </div>
 
       <div className="mt-6 flex justify-end">
-        <button className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+        <button className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-emerald-700 transition-colors">
           Save Settings
         </button>
       </div>

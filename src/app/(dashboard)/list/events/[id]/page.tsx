@@ -56,7 +56,7 @@ const SingleEventPage = () => {
       <div className="w-full lg:w-2/3">
         {/*CARD*/}
         <div className="flex flex-col gap-4">
-          <div className="bg-pink-200 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
+          <div className="bg-rose-100 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
             <div className="flex flex-col gap-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -184,7 +184,7 @@ const SingleEventPage = () => {
                 </Link>
                 <Link 
                   href={`/list/students?classId=${event.class.id}`} 
-                  className="p-2 sm:p-3 rounded-md bg-yellow-200 hover:bg-yellow-300 transition-colors"
+                  className="p-2 sm:p-3 rounded-md bg-amber-100 hover:bg-amber-200 transition-colors"
                 >
                   View Students
                 </Link>
@@ -192,7 +192,7 @@ const SingleEventPage = () => {
             )}
             <Link 
               href="/list/events" 
-              className="p-2 sm:p-3 rounded-md bg-pink-200 hover:bg-pink-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-rose-100 hover:bg-rose-200 transition-colors"
             >
               All Events
             </Link>

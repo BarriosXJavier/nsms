@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const UserCard = ({ type }: { type: string }) => {
   return (
-    <div className="rounded-2xl odd:bg-purple-200 even:bg-yellow-300 p-4 min-w-[130px]">
+    <div className="rounded-2xl odd:bg-blue-100 even:bg-sky-100 p-4 min-w-[130px]">
       <div>
         <span>
           {new Date().getFullYear()}/{new Date().getMonth()}/

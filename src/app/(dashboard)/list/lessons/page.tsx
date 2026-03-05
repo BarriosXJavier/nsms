@@ -127,7 +127,7 @@ const LessonsListPage = () => {
   const renderRow = (item: Lesson) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-50"
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-indigo-50"
     >
       <td className="p-4 font-semibold">{item.name}</td>
       <td className="hidden md:table-cell">{item.subject?.name}</td>
@@ -184,10 +184,10 @@ const LessonsListPage = () => {
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
           <TableSearch onSearch={handleSearch} />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-amber-100 hover:bg-amber-200 transition-colors min-w-[40px]">
               <Image src="/filter.png" width={14} height={14} alt="Filter" />
             </button>
-            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-yellow-200 hover:bg-yellow-300 transition-colors min-w-[40px]">
+            <button className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-amber-100 hover:bg-amber-200 transition-colors min-w-[40px]">
               <Image src="/sort.png" width={14} height={14} alt="Sort" />
             </button>
             <FormModel table="lesson" type="create" />

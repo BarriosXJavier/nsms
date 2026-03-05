@@ -64,7 +64,7 @@ const SingleAssignmentPage = () => {
       <div className="w-full lg:w-2/3">
         {/*CARD*/}
         <div className="flex flex-col gap-4">
-          <div className="bg-yellow-200 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
+          <div className="bg-amber-100 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
             <div className="flex flex-col gap-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -200,21 +200,21 @@ const SingleAssignmentPage = () => {
             {assignment.teacher && (
               <Link 
                 href={`/list/teachers/${assignment.teacher.id}`} 
-                className="p-2 sm:p-3 rounded-md bg-purple-200 hover:bg-purple-300 transition-colors"
+                className="p-2 sm:p-3 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors"
               >
                 View Teacher
               </Link>
             )}
             <Link 
               href={`/list/results?assignmentId=${assignment.id}`} 
-              className="p-2 sm:p-3 rounded-md bg-green-200 hover:bg-green-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-emerald-100 hover:bg-emerald-200 transition-colors"
             >
               View Submissions
             </Link>
             {assignment.class && (
               <Link 
                 href={`/list/students?classId=${assignment.class.id}`} 
-                className="p-2 sm:p-3 rounded-md bg-yellow-200 hover:bg-yellow-300 transition-colors"
+                className="p-2 sm:p-3 rounded-md bg-amber-100 hover:bg-amber-200 transition-colors"
               >
                 View Students
               </Link>

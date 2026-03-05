@@ -186,7 +186,7 @@ const SingleAnnouncementPage = () => {
                 </Link>
                 <Link 
                   href={`/list/students?classId=${announcement.class.id}`} 
-                  className="p-2 sm:p-3 rounded-md bg-yellow-200 hover:bg-yellow-300 transition-colors"
+                  className="p-2 sm:p-3 rounded-md bg-amber-100 hover:bg-amber-200 transition-colors"
                 >
                   View Students
                 </Link>

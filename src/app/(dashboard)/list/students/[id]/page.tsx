@@ -119,9 +119,9 @@ const SingleStudentPage = () => {
           <h1 className="text-lg sm:text-xl font-semibold mb-3">Shortcuts</h1>
           <div className="flex gap-2 sm:gap-3 flex-wrap text-xs sm:text-sm text-gray-500">
             <Link href={`/list/lessons?classId=${student.class?.name}`} className="p-2 sm:p-3 rounded-md bg-sky-200 hover:bg-sky-300 transition-colors">Student&apos;s Lessons</Link>
-            <Link href={`/list/exams?classId=${student.class?.name}`} className="p-2 sm:p-3 rounded-md bg-pink-200 hover:bg-pink-300 transition-colors">Student&apos;s Exams</Link>
+            <Link href={`/list/exams?classId=${student.class?.name}`} className="p-2 sm:p-3 rounded-md bg-rose-100 hover:bg-rose-200 transition-colors">Student&apos;s Exams</Link>
             <Link href={`/list/assignments?classId=${student.class?.name}`} className="p-2 sm:p-3 rounded-md bg-sky-300 hover:bg-sky-400 transition-colors">Student&apos;s Assignments</Link>
-            <Link href={`/list/results?studentId=${student.studentId}`} className="p-2 sm:p-3 rounded-md bg-purple-200 hover:bg-purple-300 transition-colors">Student&apos;s Results</Link>
+            <Link href={`/list/results?studentId=${student.studentId}`} className="p-2 sm:p-3 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors">Student&apos;s Results</Link>
           </div>
         </div>
         <Performance />

@@ -35,7 +35,7 @@ const FormModel = ({ table, type, data, id }: {
 
 }) => {
   const size = type === "create" ? "w-10 h-10 sm:w-9 sm:h-9" : "w-10 h-10 sm:w-8 sm:h-8"
-  const bgColor = type === "create" ? "bg-yellow-200 hover:bg-yellow-300" : type === "update" ? "bg-sky-300 hover:bg-sky-400" : "bg-purple-300 hover:bg-purple-400"
+  const bgColor = type === "create" ? "bg-blue-200 hover:bg-blue-300" : type === "update" ? "bg-sky-300 hover:bg-sky-400" : "bg-indigo-300 hover:bg-indigo-400"
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)

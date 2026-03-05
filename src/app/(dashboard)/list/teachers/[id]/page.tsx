@@ -126,9 +126,9 @@ const SingleTeacherPage = () => {
           <h1 className="text-lg sm:text-xl font-semibold mb-3">Shortcuts</h1>
           <div className="flex gap-2 sm:gap-3 flex-wrap text-xs sm:text-sm text-gray-500">
             <Link href={`/list/classes?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-sky-200 hover:bg-sky-300 transition-colors">Teacher&apos;s Classes</Link>
-            <Link href={`/list/students?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-yellow-200 hover:bg-yellow-300 transition-colors">Teacher&apos;s Students</Link>
-            <Link href={`/list/lessons?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-purple-200 hover:bg-purple-300 transition-colors">Teacher&apos;s Lessons</Link>
-            <Link href={`/list/exams?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-pink-200 hover:bg-pink-300 transition-colors">Teacher&apos;s Exams</Link>
+            <Link href={`/list/students?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-amber-100 hover:bg-amber-200 transition-colors">Teacher&apos;s Students</Link>
+            <Link href={`/list/lessons?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors">Teacher&apos;s Lessons</Link>
+            <Link href={`/list/exams?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-rose-100 hover:bg-rose-200 transition-colors">Teacher&apos;s Exams</Link>
             <Link href={`/list/assignments?teacherId=${teacher.teacherId}`} className="p-2 sm:p-3 rounded-md bg-sky-300 hover:bg-sky-400 transition-colors">Teacher&apos;s Assignments</Link>
           </div>
         </div>

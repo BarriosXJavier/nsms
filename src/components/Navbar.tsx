@@ -29,7 +29,7 @@ const Navbar = () => {
             </button>
             <button className="bg-white rounded-full w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center cursor-pointer relative min-w-[40px]">
               <Image src="/announcement.png" alt="Announcements" width={20} height={20} />
-              <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-5 h-5 sm:w-4 sm:h-4 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs">
+              <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-5 h-5 sm:w-4 sm:h-4 flex items-center justify-center bg-blue-600 text-white rounded-full text-xs">
                 1
               </div>
             </button>

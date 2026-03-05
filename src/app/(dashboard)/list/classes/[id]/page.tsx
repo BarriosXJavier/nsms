@@ -146,25 +146,25 @@ const SingleClassPage = () => {
             </Link>
             <Link 
               href={`/list/lessons?classId=${classData.id}`} 
-              className="p-2 sm:p-3 rounded-md bg-purple-200 hover:bg-purple-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors"
             >
               Class Schedule
             </Link>
             <Link 
               href={`/list/exams?classId=${classData.id}`} 
-              className="p-2 sm:p-3 rounded-md bg-pink-200 hover:bg-pink-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-rose-100 hover:bg-rose-200 transition-colors"
             >
               Exams
             </Link>
             <Link 
               href={`/list/assignments?classId=${classData.id}`} 
-              className="p-2 sm:p-3 rounded-md bg-yellow-200 hover:bg-yellow-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-amber-100 hover:bg-amber-200 transition-colors"
             >
               Assignments
             </Link>
             <Link 
               href={`/list/events?classId=${classData.id}`} 
-              className="p-2 sm:p-3 rounded-md bg-green-200 hover:bg-green-300 transition-colors"
+              className="p-2 sm:p-3 rounded-md bg-emerald-100 hover:bg-emerald-200 transition-colors"
             >
               Events
             </Link>

@@ -27,7 +27,7 @@ const Homepage = () => {
                     Welcome, <span className="font-semibold">{session.user.email?.split("@")[0]}</span>
                   </span>
                   <Link href={`/${session.user.role.toLowerCase()}`}>
-                    <Button className="bg-black hover:bg-gray-800">Go to Dashboard</Button>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">Go to Dashboard</Button>
                   </Link>
                   <Button 
                     variant="outline" 
@@ -43,7 +43,7 @@ const Homepage = () => {
                     <Button variant="outline" className="border-gray-300 hover:bg-gray-50">Sign In</Button>
                   </Link>
                   <Link href="/signin">
-                    <Button className="bg-black hover:bg-gray-800">Get Started</Button>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
                   </Link>
                 </>
               )}
@@ -58,7 +58,7 @@ const Homepage = () => {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4 sm:mb-6">
-                Modern School Management Made <span className="text-gray-600">Simple</span>
+                Modern School Management Made <span className="text-blue-600">Simple</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
                 Streamline your educational institution with our comprehensive school management system. 
@@ -66,7 +66,7 @@ const Homepage = () => {
               </p>
               <div className="flex gap-4">
                 <Link href="/signin">
-                  <Button size="lg" className="text-lg px-8 bg-black hover:bg-gray-800">Start Free Trial</Button>
+                  <Button size="lg" className="text-lg px-8 bg-blue-600 hover:bg-blue-700 text-white">Start Free Trial</Button>
                 </Link>
                 <Link href="#features">
                   <Button size="lg" variant="outline" className="text-lg px-8 border-gray-300 hover:bg-gray-50">Learn More</Button>
@@ -179,7 +179,7 @@ const Homepage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-black">
+      <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-700">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-4xl font-bold text-white mb-6">
             Ready to Transform Your School Management?
@@ -252,15 +252,15 @@ const FeatureCard = ({ icon, title, description }: { icon: string; title: string
 
 const RoleCard = ({ title, description, link, shade }: { title: string; description: string; link: string; shade: string }) => {
   const shadeClasses: Record<string, string> = {
-    "900": "bg-gray-900 hover:bg-black text-white",
-    "700": "bg-gray-700 hover:bg-gray-800 text-white",
-    "500": "bg-gray-500 hover:bg-gray-600 text-white",
-    "300": "bg-gray-300 hover:bg-gray-400 text-gray-900",
+    "900": "bg-blue-900 hover:bg-blue-950 text-white",
+    "700": "bg-blue-700 hover:bg-blue-800 text-white",
+    "500": "bg-blue-500 hover:bg-blue-600 text-white",
+    "300": "bg-blue-300 hover:bg-blue-400 text-blue-900",
   };
   
   return (
     <Link href={link}>
-      <div className={`p-6 rounded-xl ${shadeClasses[shade]} hover:scale-105 transition-all cursor-pointer border border-gray-200`}>
+      <div className={`p-6 rounded-xl ${shadeClasses[shade]} hover:scale-105 transition-all cursor-pointer border border-blue-200`}>
         <h3 className="text-2xl font-bold mb-2">{title}</h3>
         <p className="text-sm opacity-90">{description}</p>
       </div>

@@ -64,7 +64,7 @@ const SingleResultPage = () => {
   const getGrade = (score: number) => {
     if (score >= 90) return { letter: "A", color: "text-green-600" }
     if (score >= 80) return { letter: "B", color: "text-blue-600" }
-    if (score >= 70) return { letter: "C", color: "text-yellow-600" }
+    if (score >= 70) return { letter: "C", color: "text-amber-600" }
     if (score >= 60) return { letter: "D", color: "text-orange-600" }
     return { letter: "F", color: "text-red-600" }
   }
@@ -77,7 +77,7 @@ const SingleResultPage = () => {
       <div className="w-full lg:w-2/3">
         {/*CARD*/}
         <div className="flex flex-col gap-4">
-          <div className="bg-green-200 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
+          <div className="bg-emerald-100 py-4 sm:py-6 px-3 sm:px-4 rounded-md">
             <div className="flex flex-col gap-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -219,7 +219,7 @@ const SingleResultPage = () => {
             {result.teacher && (
               <Link 
                 href={`/list/teachers/${result.teacher.id}`} 
-                className="p-2 sm:p-3 rounded-md bg-purple-200 hover:bg-purple-300 transition-colors"
+                className="p-2 sm:p-3 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors"
               >
                 View Teacher
               </Link>
@@ -227,7 +227,7 @@ const SingleResultPage = () => {
             {result.student && (
               <Link 
                 href={`/list/results?studentId=${result.student.id}`} 
-                className="p-2 sm:p-3 rounded-md bg-green-200 hover:bg-green-300 transition-colors"
+                className="p-2 sm:p-3 rounded-md bg-emerald-100 hover:bg-emerald-200 transition-colors"
               >
                 Student Results
               </Link>
