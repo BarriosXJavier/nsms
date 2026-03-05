@@ -1,32 +1,50 @@
-"use client";
+"use client"
 
-import TableSearch from "@/components/TableSearch";
-import React from "react";
-import Image from "next/image";
-import Pagination from "@/components/Pagination";
-import Table from "@/components/Table";
-import Link from "next/link";
-import { resultsData, role } from "@/lib/data";
-import FormModel from "@/components/FormModel";
+import React, { useState, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 
-type Results = {
-  id: number;
-  subject: string;
-  teacher: string;
-  class: string;
-  student: string;
-  type: "exam" | "assignment";
-  dueDate: string;
-  score: number;
-};
+import TableSearch from "@/components/TableSearch"
+import Table from "@/components/Table"
+import FormModel from "@/components/FormModel"
+
+type Result = {
+  id: string
+  score: number
+  type: "EXAM" | "ASSIGNMENT"
+  student: {
+    id: string
+    name: string
+    studentId: string
+  }
+  subject: {
+    id: string
+    name: string
+  }
+  teacher: {
+    id: string
+    name: string
+  }
+  exam?: {
+    title: string
+    date: string
+  } | null
+  assignment?: {
+    title: string
+    dueDate: string
+  } | null
+}
+
 const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
   {
     header: "Student",
     accessor: "student",
+  },
+  {
+    header: "Subject",
+    accessor: "subject",
+    className: "hidden md:table-cell",
   },
   {
     header: "Score",
@@ -34,63 +52,156 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
+    header: "Type",
+    accessor: "type",
+    className: "hidden md:table-cell",
+  },
+  {
     header: "Teacher",
     accessor: "teacher",
-    className: "hidden md:table-cell",
+    className: "hidden lg:table-cell",
   },
   {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "dueDate",
-  },
-  {
-    Actions: "Actions",
+    header: "Actions",
     accessor: "actions",
-    className: "hidden md:table-cell",
   },
-];
+]
 
 const ResultsListPage = () => {
-  const renderRow = (item: Results) => (
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [results, setResults] = useState<Result[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  })
+
+  const currentPage = parseInt(searchParams.get("page") || "1")
+
+  useEffect(() => {
+    fetchResults()
+  }, [currentPage])
+
+  const fetchResults = async () => {
+    try {
+      setLoading(true)
+      setError("")
+
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "10",
+      })
+
+      const response = await fetch(`/api/results?${params}`)
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch results")
+      }
+
+      const data = await response.json()
+      setResults(data.results)
+      setPagination(data.pagination)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("page", page.toString())
+    router.push(`?${params.toString()}`)
+  }
+
+  const handleSearch = (query: string) => {
+    const params = new URLSearchParams()
+    params.set("page", "1")
+    router.push(`?${params.toString()}`)
+  }
+
+  const renderRow = (item: Result) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200"
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-50"
     >
-      <td className="flex items-center gap-4 p-4">{item.subject}</td>
-      <td>{item.student}</td>
-      <td className="hidden md:table-cell">{item.score}</td>
-      <td className="hidden md:table-cell">{item.teacher}</td>
-      <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.dueDate}</td>
+      <td className="flex items-center gap-4 p-4">
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.student.name}</h3>
+          <p className="text-xs text-gray-500">{item.student.studentId}</p>
+        </div>
+      </td>
+      <td className="hidden md:table-cell">{item.subject.name}</td>
+      <td className="hidden md:table-cell">
+        <span
+          className={`px-2 py-1 rounded-full text-xs ${
+            item.score >= 90
+              ? "bg-green-100 text-green-800"
+              : item.score >= 70
+              ? "bg-blue-100 text-blue-800"
+              : item.score >= 50
+              ? "bg-yellow-100 text-yellow-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {item.score}%
+        </span>
+      </td>
+      <td className="hidden md:table-cell">{item.type}</td>
+      <td className="hidden lg:table-cell">{item.teacher.name}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`list/results/${item.id}`}>
+          <Link href={`/list/results/${item.id}`}>
             <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-200">
-              <Image src="/edit.png" width={16} height={16} alt="" />
+              <Image src="/view.png" width={16} height={16} alt="" />
             </button>
           </Link>
-          {role === "admin" && (
-            <>
-              <FormModel table="result" type="delete" id={item.id} />
-              <FormModel table="result" type="update" data={item} />
-            </>
-          )}
+          <FormModel table="result" type="update" data={item} id={item.id} />
+          <FormModel table="result" type="delete" id={item.id} />
         </div>
       </td>
     </tr>
-  );
+  )
+
+  if (loading) {
+    return (
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="flex items-center justify-center h-96">
+          <p className="text-gray-500">Loading results...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button
+              onClick={fetchResults}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      {/*Top*/}
+      {/* Top */}
       <div className="flex items-center justify-between">
         <h1 className="hidden md:block text-lg font-semibold">All Results</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
-          <TableSearch />
+          <TableSearch onSearch={handleSearch} />
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
               <Image src="/filter.png" width={14} height={14} alt="Filter" />
@@ -98,16 +209,71 @@ const ResultsListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
               <Image src="/sort.png" width={14} height={14} alt="Sort" />
             </button>
-            {role === "admin" && <FormModel table="teacher" type="create" />}
+            <FormModel table="result" type="create" />
           </div>
         </div>
       </div>
-      {/*List*/}
-      <Table columns={columns} renderRow={renderRow} data={resultsData} />
-      {/*Pagination*/}
-      <Pagination />
-    </div>
-  );
-};
 
-export default ResultsListPage;
+      {/* List */}
+      {results.length === 0 ? (
+        <div className="text-center py-12 text-gray-500">
+          No results found.
+        </div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={results} />
+      )}
+
+      {/* Pagination */}
+      <div className="p-4 flex items-center justify-between text-gray-500">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Prev
+        </button>
+        <div className="flex items-center gap-2 text-sm">
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+            .filter((page) => {
+              return (
+                page === 1 ||
+                page === pagination.totalPages ||
+                Math.abs(page - currentPage) <= 1
+              )
+            })
+            .map((page, index, array) => (
+              <React.Fragment key={page}>
+                {index > 0 && array[index - 1] !== page - 1 && (
+                  <span key={`ellipsis-${page}`}>...</span>
+                )}
+                <button
+                  
+                  onClick={() => handlePageChange(page)}
+                  className={`px-2 rounded-sm ${
+                    currentPage === page ? "bg-sky-200" : ""
+                  }`}
+                >
+                  {page}
+                </button>
+              </React.Fragment>
+            ))}
+        </div>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === pagination.totalPages}
+          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Info */}
+      <div className="text-xs text-gray-500 text-center mt-2">
+        Showing {results.length} of {pagination.total} results (Page{" "}
+        {currentPage} of {pagination.totalPages})
+      </div>
+    </div>
+  )
+}
+
+export default ResultsListPage

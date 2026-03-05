@@ -22,22 +22,22 @@ const columns = [
     accessor: "info"
   },
   {
-    students: "Student Names",
+    header: "Student Names",
     accessor: "students",
     className: "hidden md:table-cell"
   },
   {
-    Phone: "Phone",
+    header: "Phone",
     accessor: "phone",
     className: "hidden md:table-cell"
   },
   {
-    Address: "Address",
+    header: "Address",
     accessor: "address",
     className: "hidden md:table-cell"
   },
   {
-    Actions: "Actions",
+    header: "Actions",
     accessor: "actions",
     className: "hidden md:table-cell"
   }

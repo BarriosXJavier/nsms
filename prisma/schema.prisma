@@ -1,0 +1,335 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  role          UserRole
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  teacher Teacher?
+  student Student?
+  parent  Parent?
+  sessions Session[]
+  accounts Account[]
+
+  @@index([email])
+}
+
+enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+  PARENT
+}
+
+// NextAuth Session Management
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// School Entities
+
+model Teacher {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  teacherId String   @unique
+  name      String
+  phone     String?
+  address   String?
+  photo     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects     Subject[]
+  classes      Class[]        @relation("ClassSupervisor")
+  lessons      Lesson[]
+  exams        Exam[]
+  assignments  Assignment[]
+  results      Result[]
+
+  @@index([userId])
+  @@index([teacherId])
+}
+
+model Student {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  studentId String   @unique
+  name      String
+  phone     String?
+  address   String?
+  photo     String?
+  grade     Int
+  classId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class       Class        @relation(fields: [classId], references: [id])
+  results     Result[]
+  parents     Parent[]     @relation("StudentParents")
+  attendances Attendance[]
+
+  @@index([userId])
+  @@index([studentId])
+  @@index([classId])
+}
+
+model Parent {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  name      String
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  students Student[] @relation("StudentParents")
+
+  @@index([userId])
+}
+
+model Class {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  capacity     Int
+  grade        Int
+  supervisorId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  supervisor   Teacher?      @relation("ClassSupervisor", fields: [supervisorId], references: [id])
+  students     Student[]
+  lessons      Lesson[]
+  exams        Exam[]
+  assignments  Assignment[]
+  events       Event[]
+  announcements Announcement[]
+
+  @@index([supervisorId])
+  @@index([grade])
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teachers    Teacher[]
+  lessons     Lesson[]
+  exams       Exam[]
+  assignments Assignment[]
+  results     Result[]
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  name      String
+  day       DayOfWeek
+  startTime String
+  endTime   String
+  subjectId String
+  classId   String
+  teacherId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subject Subject @relation(fields: [subjectId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+
+  @@index([subjectId])
+  @@index([classId])
+  @@index([teacherId])
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Exam {
+  id        String   @id @default(cuid())
+  title     String
+  date      DateTime
+  startTime String
+  endTime   String
+  subjectId String
+  classId   String
+  teacherId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subject Subject  @relation(fields: [subjectId], references: [id])
+  class   Class    @relation(fields: [classId], references: [id])
+  teacher Teacher  @relation(fields: [teacherId], references: [id])
+  results Result[]
+
+  @@index([subjectId])
+  @@index([classId])
+  @@index([teacherId])
+  @@index([date])
+}
+
+model Assignment {
+  id        String   @id @default(cuid())
+  title     String
+  dueDate   DateTime
+  subjectId String
+  classId   String
+  teacherId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subject Subject  @relation(fields: [subjectId], references: [id])
+  class   Class    @relation(fields: [classId], references: [id])
+  teacher Teacher  @relation(fields: [teacherId], references: [id])
+  results Result[]
+
+  @@index([subjectId])
+  @@index([classId])
+  @@index([teacherId])
+  @@index([dueDate])
+}
+
+model Result {
+  id           String     @id @default(cuid())
+  score        Int
+  type         ResultType
+  studentId    String
+  subjectId    String
+  teacherId    String
+  examId       String?
+  assignmentId String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  student    Student     @relation(fields: [studentId], references: [id])
+  subject    Subject     @relation(fields: [subjectId], references: [id])
+  teacher    Teacher     @relation(fields: [teacherId], references: [id])
+  exam       Exam?       @relation(fields: [examId], references: [id])
+  assignment Assignment? @relation(fields: [assignmentId], references: [id])
+
+  @@index([studentId])
+  @@index([subjectId])
+  @@index([teacherId])
+  @@index([examId])
+  @@index([assignmentId])
+}
+
+enum ResultType {
+  EXAM
+  ASSIGNMENT
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  title     String
+  description String?
+  date      DateTime
+  startTime String
+  endTime   String
+  classId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  class Class? @relation(fields: [classId], references: [id])
+
+  @@index([classId])
+  @@index([date])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  description String?
+  date      DateTime
+  classId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  class Class? @relation(fields: [classId], references: [id])
+
+  @@index([classId])
+  @@index([date])
+}
+
+model Attendance {
+  id        String           @id @default(cuid())
+  date      DateTime
+  status    AttendanceStatus
+  studentId String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@unique([studentId, date])
+  @@index([studentId])
+  @@index([date])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}

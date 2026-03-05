@@ -1,108 +1,195 @@
-"use client";
+"use client"
 
-import TableSearch from "@/components/TableSearch";
-import React from "react";
-import Image from "next/image";
-import Pagination from "@/components/Pagination";
-import Table from "@/components/Table";
-import Link from "next/link";
-import { role, studentsData } from "@/lib/data";
-import FormModel from "@/components/FormModel";
+import React, { useState, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
+
+import TableSearch from "@/components/TableSearch"
+import Table from "@/components/Table"
+import FormModel from "@/components/FormModel"
 
 type Student = {
-  id: number;
-  studentId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  class: string;
-  phone?: string;
-  grade: number;
-  address: string;
-};
+  id: string
+  studentId: string
+  name: string
+  phone: string
+  address: string
+  gradeLevel: number
+  user: {
+    email: string
+  }
+  class: {
+    id: string
+    name: string
+  }
+  parent?: {
+    id: string
+    name: string
+  }
+}
+
 const columns = [
   {
-    header: "info",
+    header: "Info",
     accessor: "info",
   },
   {
-    student: "Student ID",
+    header: "Student ID",
     accessor: "studentId",
     className: "hidden md:table-cell",
   },
   {
-    subjects: "Grade",
+    header: "Grade",
     accessor: "grade",
     className: "hidden md:table-cell",
   },
   {
-    Classes: "Classes",
-    accessor: "classes",
+    header: "Class",
+    accessor: "class",
     className: "hidden md:table-cell",
   },
   {
-    Phone: "Phone",
+    header: "Phone",
     accessor: "phone",
-    className: "hidden md:table-cell",
+    className: "hidden lg:table-cell",
   },
   {
-    Address: "Address",
+    header: "Address",
     accessor: "address",
-    className: "hidden md:table-cell",
+    className: "hidden lg:table-cell",
   },
   {
-    Actions: "Actions",
+    header: "Actions",
     accessor: "actions",
-    className: "hidden md:table-cell",
   },
-];
-
-const renderRow = (item: Student) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 even:bg-gray-300 text-sm bg-purple-200"
-  >
-    <td className="flex items-center gap-4 p-4">
-      <Image
-        src={item.photo}
-        width={40}
-        height={40}
-        alt="Student"
-        className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-      />
-      <div className="flex flex-col">
-        <h3 className="font-semibold">{item.name}</h3>
-        <p className="text-xs text-gray-500">{item?.class}</p>
-      </div>
-    </td>
-    <td className="hidden md:table-cell">{item.studentId}</td>
-    <td className="hidden md:table-cell">{item.class}</td>
-    <td className="hidden md:table-cell">{item.grade}</td>
-    <td className="hidden md:table-cell">{item.address}</td>
-    <td className="hidden md:table-cell">{item.phone}</td>
-    <td>
-      <div className="flex items-center gap-2">
-        <Link href={`list/students/${item.id}`}>
-          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-200">
-            <Image src="/view.png" width={16} height={16} alt="" />
-          </button>
-        </Link>
-        {role === "admin" && (
-          <FormModel table="student" type="delete" id={item.id} />
-        )}
-      </div>
-    </td>
-  </tr>
-);
+]
 
 const StudentsListPage = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [students, setStudents] = useState<Student[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  })
+
+  const currentPage = parseInt(searchParams.get("page") || "1")
+  const searchQuery = searchParams.get("search") || ""
+
+  useEffect(() => {
+    fetchStudents()
+  }, [currentPage, searchQuery])
+
+  const fetchStudents = async () => {
+    try {
+      setLoading(true)
+      setError("")
+
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "10",
+        ...(searchQuery && { search: searchQuery }),
+      })
+
+      const response = await fetch(`/api/students?${params}`)
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch students")
+      }
+
+      const data = await response.json()
+      setStudents(data.students)
+      setPagination(data.pagination)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("page", page.toString())
+    router.push(`?${params.toString()}`)
+  }
+
+  const handleSearch = (query: string) => {
+    const params = new URLSearchParams()
+    params.set("page", "1")
+    if (query) params.set("search", query)
+    router.push(`?${params.toString()}`)
+  }
+
+  const renderRow = (item: Student) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-50"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{item.name}</h3>
+          <p className="text-xs text-gray-500">{item.user?.email}</p>
+        </div>
+      </td>
+      <td className="hidden md:table-cell">{item.studentId}</td>
+      <td className="hidden md:table-cell">Grade {item.gradeLevel}</td>
+      <td className="hidden md:table-cell">{item.class?.name || "-"}</td>
+      <td className="hidden lg:table-cell">{item.phone || "-"}</td>
+      <td className="hidden lg:table-cell">{item.address || "-"}</td>
+      <td>
+        <div className="flex items-center gap-2">
+          <Link href={`/list/students/${item.id}`}>
+            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-200">
+              <Image src="/view.png" width={16} height={16} alt="" />
+            </button>
+          </Link>
+          <FormModel table="student" type="update" data={item} id={item.id} />
+          <FormModel table="student" type="delete" id={item.id} />
+        </div>
+      </td>
+    </tr>
+  )
+
+  if (loading) {
+    return (
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="flex items-center justify-center h-96">
+          <p className="text-gray-500">Loading students...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button
+              onClick={fetchStudents}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      {/*Top*/}
+      {/* Top */}
       <div className="flex items-center justify-between">
         <h1 className="hidden md:block text-lg font-semibold">All Students</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
-          <TableSearch />
+          <TableSearch onSearch={handleSearch} />
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
               <Image src="/filter.png" width={14} height={14} alt="Filter" />
@@ -110,16 +197,71 @@ const StudentsListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-200">
               <Image src="/sort.png" width={14} height={14} alt="Sort" />
             </button>
-            {role === "admin" && <FormModel table="student" type="create" />}
+            <FormModel table="student" type="create" />
           </div>
         </div>
       </div>
-      {/*List*/}
-      <Table columns={columns} renderRow={renderRow} data={studentsData} />
-      {/*Pagination*/}
-      <Pagination />
-    </div>
-  );
-};
 
-export default StudentsListPage;
+      {/* List */}
+      {students.length === 0 ? (
+        <div className="text-center py-12 text-gray-500">
+          No students found. {searchQuery && "Try a different search."}
+        </div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={students} />
+      )}
+
+      {/* Pagination */}
+      <div className="p-4 flex items-center justify-between text-gray-500">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Prev
+        </button>
+        <div className="flex items-center gap-2 text-sm">
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+            .filter((page) => {
+              return (
+                page === 1 ||
+                page === pagination.totalPages ||
+                Math.abs(page - currentPage) <= 1
+              )
+            })
+            .map((page, index, array) => (
+              <React.Fragment key={page}>
+                {index > 0 && array[index - 1] !== page - 1 && (
+                  <span key={`ellipsis-${page}`}>...</span>
+                )}
+                <button
+                  
+                  onClick={() => handlePageChange(page)}
+                  className={`px-2 rounded-sm ${
+                    currentPage === page ? "bg-sky-200" : ""
+                  }`}
+                >
+                  {page}
+                </button>
+              </React.Fragment>
+            ))}
+        </div>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === pagination.totalPages}
+          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Info */}
+      <div className="text-xs text-gray-500 text-center mt-2">
+        Showing {students.length} of {pagination.total} students (Page{" "}
+        {currentPage} of {pagination.totalPages})
+      </div>
+    </div>
+  )
+}
+
+export default StudentsListPage
